@@ -4,9 +4,14 @@ export enum DeviceType {
   desktop,
 }
 
+interface AuthenticateData {
+  url: string,
+  [propName:string]: any
+}
+
 export interface RequestProps {
   url: string;
-  authenticate?: object;
+  authenticate?: AuthenticateData;
   deviceType?: DeviceType;
   ignoreHTTPSErrors?: boolean;
 }
