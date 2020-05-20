@@ -1,12 +1,12 @@
-const URL = require('url');
+import * as URL from 'url';
 
-module.exports = {
+export default {
     map: {},
 
-    update(url, title, screenshot) {
+    update(url: string, title: string, screenshot: string) {
         let depths = URL.parse(url).pathname.substr(1).split('/');
 
-        let target = Object.assign(this.map, {});
+        let target: object = Object.assign(this.map, {});
 
         for (let i = 0; i < depths.length; i++) {
             const depth = depths[i];
