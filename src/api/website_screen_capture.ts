@@ -4,7 +4,7 @@ import * as fs from 'fs';
 
 import * as puppeteer from 'puppeteer';
 
-import { DeviceType } from './configuration';
+import { DeviceType } from './device';
 import ScreenCapture from './screen_capture';
 import WebsiteCrawler from './website_crawler';
 import WebsiteMapGenerator from './website_map_generator';

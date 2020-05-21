@@ -1,4 +1,5 @@
-import { DeviceType, DeviceViewport } from './configuration';
+import { DeviceType } from './device';
+import { DeviceViewport } from "./DeviceViewport";
 
 export default class {
     viewport: object;
