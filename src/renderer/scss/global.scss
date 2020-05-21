@@ -1,0 +1,16 @@
+@import 'font';
+@import 'color';
+
+html {
+    font-size: 10px;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Muli', sans-serif;
+}
+
+.hidden {
+    display: none;
+}

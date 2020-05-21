@@ -11,23 +11,31 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/preset-react": "^7.9.4",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
     "electron": "^9.0.0",
     "electron-webpack": "^2.8.2",
+    "electron-webpack-ts": "^4.0.1",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
+    "typescript": "^3.9.3",
     "webpack": "^4.43.0"
   },
   "electronWebpack": {
+    "title": "Cartwheel - 옆구르기 하면서 봐도 안다.",
     "commonSourceDirectory": "src/common",
-    "staticSourceDirectory": "src/static",
+    "staticSourceDirectory": "static",
     "main": {
       "sourceDirectory": "src/main"
     },
     "renderer": {
-      "sourceDirectory": null
+      "sourceDirectory": "src/renderer"
     }
   },
   "dependencies": {
-    "puppeteer": "^3.1.0"
+    "puppeteer": "^3.1.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   }
 }

@@ -1,0 +1,27 @@
+@import '../../scss/global.scss';
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: .8rem 1.6rem;
+    border-bottom: 1px solid $border-color;
+    box-sizing: border-box;
+}
+
+h1 {
+    display: inline-block;
+    margin: 0;
+    padding: 1rem 0;
+    font-size: 1.6rem;
+    color: $primary-color;
+    line-height: 1.2;
+    text-align: center;
+
+    &:after {
+        display: block;
+        font-size: 4rem;
+        content: '\1F938\1F440\1F44C';
+    }
+}
