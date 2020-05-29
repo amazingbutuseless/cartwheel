@@ -2,13 +2,15 @@
 
 .selector-wrapper {
     position: relative;
-    border: .1rem solid $border-color;
+    min-width: 20rem;
+    border: 1px solid $border-color;
+    border-radius: 2px;
     cursor: pointer;
   
     select {
       padding: 1.2rem 1rem;
       width: 100%;
-      border: .1rem solid transparent;
+      border: 1px solid transparent;
       background-color: transparent;
       font-size: 1.4rem;
       appearance: none;
@@ -17,11 +19,13 @@
     }
   
     &:after {
+      @include FontAwesomeIcon('\f0d7');
+
       position: absolute;
       top: 1.2rem;
       right: 1.2rem;
-      font-family: FontAwesome;
-      content: '\f0d7';
+      font-size: 1.6rem;
+      color: darken($border-color, 25%);
       pointer-events: none;
     }
   }

@@ -1,28 +1,19 @@
-import * as path from 'path';
 import * as React from 'react';
-
-import CustomSelector from '../custom_selector';
 
 import './style.scss';
 
-class WebSiteSelector extends CustomSelector {
-}
+import { WebsiteSelector } from './components/website_selector';
 
 export default () => {
-    const registeredWebSites: object[] = [
-        {
-            key: '[ORC] local',
-            value: 'https://local.oxfordreadingclub.com',
-        }
-    ];
+    const onWebsiteSelect = (e: Event) => {
+        console.log(`${ e.target.value } selected!`);
+    };
 
     return (
         <header>
             <h1>Cartwheel</h1>
 
-            <WebSiteSelector name="website-list" options={ registeredWebSites } />
-
-            <img src={ path.join(__static, "/settings-black-18dp.svg") } alt=""/>
+            <WebsiteSelector onWebsiteSelect={ onWebsiteSelect }></WebsiteSelector>
         </header>
     );
 };

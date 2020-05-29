@@ -10,11 +10,18 @@ interface KeyValueObject {
 interface CustomSelectorProps {
     name: string,
     options: object[] | string[],
+    onOptionChange?: Function,
 }
 
 export default class extends React.Component {
     constructor(public props: CustomSelectorProps) {
         super(props);
+
+        if (props.onOptionChange) this.onOptionChange = props.onOptionChange;
+    }
+
+    onOptionChange(e: Event) {
+        console.log(e.target.value);
     }
 
     getOptions() {
@@ -42,7 +49,9 @@ export default class extends React.Component {
 
         return (
             <div className="selector-wrapper">
-                <select name={ name }>{ this.getOptions() }</select>
+                <select name={ name } onChange={ this.onOptionChange }>
+                    { this.getOptions() }
+                </select>
             </div>
         )
     }
