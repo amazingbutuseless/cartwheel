@@ -1,6 +1,38 @@
-@import '../../scss/global.scss';
+<template>
+<div class="custom-select-wrapper">
+    <select
+    :name="name"
+    @change="onOptionChange"
+>
+    <option
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
+    >
+        {{ option.key }}
+    </option>
+</select>
+</div>
+</template>
 
-.selector-wrapper {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+    props: {
+        name: String,
+        options: {
+            type: Array,
+        },
+        onOptionChange: Function,
+    },
+});
+</script>
+
+<style lang="scss" scoped>
+@import '../scss/global.scss';
+
+.custom-select-wrapper {
     position: relative;
     min-width: 20rem;
     border: 1px solid $border-color;
@@ -29,3 +61,4 @@
       pointer-events: none;
     }
   }
+</style>

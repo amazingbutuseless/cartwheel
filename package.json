@@ -1,5 +1,5 @@
 {
-  "name": "website-ui-comparisoner",
+  "name": "Cartwheel",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -11,15 +11,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/preset-react": "^7.9.4",
-    "@types/react": "^16.9.35",
-    "@types/react-dom": "^16.9.8",
     "electron": "^9.0.0",
     "electron-webpack": "^2.8.2",
     "electron-webpack-ts": "^4.0.1",
+    "electron-webpack-vue": "^2.4.0",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "typescript": "^3.9.3",
+    "vue": "^2.6.11",
     "webpack": "^4.43.0"
   },
   "electronWebpack": {
@@ -34,8 +33,6 @@
     }
   },
   "dependencies": {
-    "puppeteer": "^3.1.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "puppeteer": "^3.1.0"
   }
 }
