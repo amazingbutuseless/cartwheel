@@ -3,15 +3,15 @@
         <header>
             <h2>
                 {{ selectedWebsite }}
-                <small>{{ selectedTimestamp }}</small>
+                <small>{{ timeWhenTakingScreenshotBegun }}</small>
             </h2>
         </header>
 
-        <div v-for="page in pages" :key="page.path">
-            <h3>{{ page.path }}</h3>
+        <details v-for="page in pages" :key="page.path">
+            <summary>{{ page.path }} - {{ page.title }}</summary>
 
             <img :src="page.thumbnail" alt="">
-        </div>
+        </details>
     </div>
 </template>
 
@@ -20,26 +20,44 @@ import Vue from 'vue';
 
 export default Vue.extend({
     computed: {
-        selectedWebsite() {
+        selectedWebsite(): string {
             return this.$store.state.selectedWebsite;
         },
 
-        selectedTimestamp() {
-            const timestamp = this.$store.state.selectedTimestamp;
+        timeWhenTakingScreenshotBegun(): string {
+            const timestamp: string = this.$store.state.selectedTimestamp;
+            this.$data.selectedTimestamp = timestamp;
 
             return new Date(parseInt(timestamp)).toLocaleString();
         },
+    },
 
-        pages() {
-            // todo: directory를 watch하면서 정보를 가져오기
-            return [
+    watch: {
+        selectedTimestamp(selected) {
+            this.setPages();
+        }
+    },
+
+    methods: {
+        setPages() {
+            console.log(`find page data under ${ this.$store.state.selectedWebsite }/${ this.$data.selectedTimestamp }`);
+            
+            this.$data.pages = [
                 {
+                    title: 'Registration',
                     path: '/user/register',
                     thumbnail: 'file://dfdfa',
                 }
-            ]
-        },
+            ];
+        }
     },
+
+    data() {
+        return {
+            'selectedTimestamp': '',
+            'pages': [],
+        }
+    }
 });
 </script>
 
@@ -50,6 +68,7 @@ export default Vue.extend({
 
     h2 {
         margin: 0;
+        margin-bottom: 2.4rem;
         padding: 0;
         font-size: 1.6rem;
         color: $primary-color;
@@ -68,13 +87,8 @@ export default Vue.extend({
         }
     }
 
-    h3 {
+    summary {
         font-size: 1.4rem;
         font-weight: 500;
-
-        &:before {
-            display: inline-block;
-            content: '\1F4C4';
-        }
     }
 </style>
