@@ -1,14 +1,15 @@
+@import 'variables';
 @import 'font';
-@import 'color';
 
 html {
-    font-size: 10px;
+    font-size: map-get($font, base-size);
 }
 
 body {
-    width: 100vw;
     height: 100vh;
-    font-family: 'Muli', sans-serif;
+    background-color: map-get($color, background);
+    font-family: map-get($font, family);
+    color: map-get($font, color);
 }
 
 .hidden {

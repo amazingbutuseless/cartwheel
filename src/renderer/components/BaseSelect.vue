@@ -30,7 +30,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-@import '../scss/global.scss';
+    @import '../scss/variables';
+    @import '../scss/font';
 
 .custom-select-wrapper {
     position: relative;

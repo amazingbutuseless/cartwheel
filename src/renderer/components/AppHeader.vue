@@ -44,7 +44,7 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-@import '../scss/global.scss';
+    @import '../scss/variables';
 
 header {
     position: fixed;

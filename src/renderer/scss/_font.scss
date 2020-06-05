@@ -6,3 +6,9 @@
     font-weight: 900;
     content: '#{$content}';
 }
+
+$font: (
+    family: ('Muli', sans-serif),
+    base-size: 10px,
+    color: map-get($color, font),
+);
