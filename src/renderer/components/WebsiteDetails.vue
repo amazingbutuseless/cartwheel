@@ -31,6 +31,7 @@ export default Vue.extend({
         },
 
         pages() {
+            // todo: directory를 watch하면서 정보를 가져오기
             return [
                 {
                     path: '/user/register',

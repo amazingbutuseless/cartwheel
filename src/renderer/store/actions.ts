@@ -18,8 +18,13 @@ export default {
     context.commit('setAvailableWebsites', websites);
   },
 
-  setScreenshotGroups(context, hostname: string) {
-    let timestamps: string[] = [];
+  setAvailableTimestamps(context, payload) {
+    let timestamps: string[] = ["1591361622000", "1591365622000"];
     context.commit('setAvailableTimestamps', timestamps);
+    console.log(`find the directory under ${ payload.selectedWebsite }`);
+  },
+
+  takeScreenshots({ commit, state }) {
+      console.log(`start to take screenshots of ${ state.selectedWebsite }`);
   },
 };

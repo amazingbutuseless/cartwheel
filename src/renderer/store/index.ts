@@ -33,6 +33,14 @@ export default new Vuex.Store({
         };
       });
     },
+
+    timestampGroup(state: CartwheelStates) {
+        return state.availableTimestamps.map((timestamp: string) => {
+            return {
+                timestamp,
+            };
+        });
+    }
   },
 
   mutations: Mutations,

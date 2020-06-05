@@ -34,22 +34,14 @@
 
         computed: {
             groups() {
-                return [
-                    {
-                        "timestamp": "1591361622000"
-                    },
-                    {
-                        "timestamp": "1591365622000"
-                    }
-                ]
+                return this.$store.getters.timestampGroup;
             }
         },
 
-        created() {
-        },
+        updated() {
+            const items = this.$el.querySelectorAll('a');
 
-        mounted() {
-            // 파일시스템에서 hostname 이하에 저장된 directory list를 가져옮
+            if (items.length > 0) items.item(0).click();
         },
     });
 </script>

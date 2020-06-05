@@ -16,13 +16,17 @@
 
     export default Vue.extend({
         name: 'App',
+        
+        store,
 
         components: {
             AppHeader,
             WebsiteContainer,
         },
 
-        store,
+        beforeCreate() {
+            this.$store.dispatch('setAvailableWebsites');
+        },
     });
 </script>
 

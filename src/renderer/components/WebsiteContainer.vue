@@ -35,7 +35,8 @@
         methods: {
             onTakeScreenshotsBtnClick(e: Event) {
                 e.target.disabled = true;
-                console.log('take!');
+
+                this.$store.dispatch('takeScreenshots');
             }
         },
     });

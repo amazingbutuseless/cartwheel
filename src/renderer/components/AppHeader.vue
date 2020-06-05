@@ -6,7 +6,9 @@
             name="website-select"
             :options="registeredWebsites"
             :onOptionChange="onWebsiteSelect"
-        />
+        >
+            <option disabled selected hidden>Choose the website</option>
+        </base-select>
     </header>
 </template>
 
@@ -25,13 +27,19 @@
 
         methods: {
             onWebsiteSelect(e: Event) {
-                this.$store.commit('selectWebsite', e.target.value);
+                const selectedWebsite = e.target.value;
+
+                this.$store.commit('selectWebsite', selectedWebsite);
+                this.$store.dispatch({
+                    type: 'setAvailableTimestamps',
+                    selectedWebsite
+                });
             }
         },
 
         computed: {
             registeredWebsites() {
-                return this.$store.state.availableWebsites;
+                return this.$store.getters.registeredWebsites;
             },
         },
     });

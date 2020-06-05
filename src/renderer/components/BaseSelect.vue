@@ -4,12 +4,13 @@
             :name="name"
             @change="onOptionChange"
         >
+            <slot></slot>
             <option
                 v-for="option in options"
                 :key="option.value"
                 :value="option.value"
             >
-                {{ option.key }}
+                {{ option.name }}
             </option>
         </select>
     </div>
