@@ -11,10 +11,11 @@
 
     export default Vue.extend({
         methods: {
-            onItemClick(e: Event) {
+            onItemClick(e: Event): void {
                 e.preventDefault();
 
                 const items = this.$el.querySelectorAll('li');
+
                 items.forEach(item => {
                     if (item.querySelector('a') === e.target) {
                         item.classList.add('active');
@@ -49,9 +50,9 @@
 <style lang="sass" scoped>
     @import '../scss/variables';
 
-    $link-color: map-get($color, primary);
-    $hover-color: darken($link-color, 10%);
-    $active-color: map-get($color, font);
+    $link-color: lighten(map-get($color, border), 20%);
+    $hover-color: lighten($link-color, 10%);
+    $active-color: map-get($color, primary);
 
     
     ul {
