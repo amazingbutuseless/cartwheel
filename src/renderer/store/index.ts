@@ -1,9 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { WebsiteMetadata } from './website';
-import Mutations from './mutations';
-import Actions from './actions';
+import { WebsiteMetadata } from '../../common/website';
+
+import modal from './modules/modal';
+import websites from './modules/websites';
+import website from './modules/website';
+import screenshots from './modules/screenshots';
 
 Vue.use(Vuex);
 
@@ -16,34 +19,10 @@ interface CartwheelStates {
 }
 
 export default new Vuex.Store({
-  state: {
-    availableWebsites: [],
-    selectedWebsite: '',
-
-    availableTimestamps: [],
-    selectedTimestamp: '',
-  },
-
-  getters: {
-    registeredWebsites(state: CartwheelStates) {
-      return state.availableWebsites.map((website: WebsiteMetadata) => {
-        return {
-          name: website.title,
-          value: website.url,
-        };
-      });
-    },
-
-    timestampGroup(state: CartwheelStates) {
-        return state.availableTimestamps.map((timestamp: string) => {
-            return {
-                timestamp,
-            };
-        });
-    }
-  },
-
-  mutations: Mutations,
-
-  actions: Actions,
+  modules: {
+    modal,
+    websites,
+    website,
+    screenshots,
+  }
 });

@@ -1,36 +1,69 @@
 <template>
-    <div>
-        <app-header />
-        <website-container />
-    </div>
+<div>
+    <app-header />
+    <website-tools />
+    <website-container />
+</div>
 </template>  
 
 
 <script lang="ts">
-    import Vue from 'vue';
+import { ipcRenderer, IpcRendererEvent } from 'electron';
 
-    import store from './store/index';
+import Vue from 'vue';
 
-    import AppHeader from './components/AppHeader.vue';
-    import WebsiteContainer from './components/WebsiteContainer.vue';
+import store from './store/index';
 
-    export default Vue.extend({
-        name: 'App',
+import AppHeader from './components/AppHeader.vue';
+import WebsiteTools from './components/WebsiteTools.vue';
+import WebsiteContainer from './components/WebsiteContainer.vue';
+import { WebsiteMetadata } from '../common/website';
+
+export default Vue.extend({
+    name: 'App',
+    
+    store,
+
+    components: {
+        AppHeader,
+        WebsiteTools,
+        WebsiteContainer,
+    },
+
+    methods: {
+    },
+
+    created() {
+        const onGettingWebsitesReplied = (e: IpcRendererEvent, websites: Array<WebsiteMetadata>): void => {
+            this.$store.commit('websites/setList', websites);
+        };
+
+        const onAddingWebstiteReplied = (e: IpcRendererEvent, website: WebsiteMetadata): void => {
+            console.trace();
+            this.$store.commit('websites/addItem', website);
+        };
+
+        const onUpdatingWebstiteReplied = (e: IpcRendererEvent, website: WebsiteMetadata) => {
+            this.$store.commit('websites/updateItem', website);
+        };
+
+        const onDeletingWebstiteReplied = (e: IpcRendererEvent, website: WebsiteMetadata) => {
+            this.$store.commit('websites/removeItem', website);
+        };
+
+        ipcRenderer.on('websites-get-reply', onGettingWebsitesReplied.bind(this));
         
-        store,
+        ipcRenderer.on('website-add-reply', onAddingWebstiteReplied.bind(this));
+        ipcRenderer.on('website-update-reply', onUpdatingWebstiteReplied.bind(this));
+        ipcRenderer.on('website-remove-reply', onDeletingWebstiteReplied.bind(this));
 
-        components: {
-            AppHeader,
-            WebsiteContainer,
-        },
+        this.$store.dispatch('websites/set');
+    },
+});
 
-        beforeCreate() {
-            this.$store.dispatch('setAvailableWebsites');
-        },
-    });
 </script>
 
 
 <style lang="scss">
-    @import './scss/global';
+@import './scss/global';
 </style>

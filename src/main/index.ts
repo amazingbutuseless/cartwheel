@@ -1,7 +1,9 @@
 import * as path from "path";
 import * as URL from "url";
 
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
+
+import WebsitesHandler from './websites_handler';
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -50,3 +52,8 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
+ipcMain.on('websites-get', WebsitesHandler.get.bind(WebsitesHandler));
+
+ipcMain.on('website-add', WebsitesHandler.add.bind(WebsitesHandler));
+ipcMain.on('website-update', WebsitesHandler.update.bind(WebsitesHandler));
+ipcMain.on('website-remove', WebsitesHandler.delete.bind(WebsitesHandler));

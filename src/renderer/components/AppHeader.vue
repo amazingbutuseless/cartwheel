@@ -1,48 +1,40 @@
 <template>
-    <header>
-        <h1>Cartwheel</h1>
+<header>
+    <h1>Cartwheel</h1>
 
-        <base-select
-            name="website-select"
-            :options="registeredWebsites"
-            :onOptionChange="onWebsiteSelect"
-        >
-            <option disabled selected hidden>Choose the website</option>
-        </base-select>
-    </header>
+    <website-manager :onManageBtnClick="onManageBtnClick" />
+
+    <website-manage-modal v-if="manageModalShown" />
+</header>
 </template>
 
 
 <script lang="ts">
-    import Vue from 'vue';
+import Vue from 'vue';
 
-    import BaseSelect from './BaseSelect.vue';
+import WebsiteManager from './WebsiteManager';
+import WebsiteManageModal from './WebsiteManageModal';
 
-    export default Vue.extend({
-        name: 'AppHeader',
+export default Vue.extend({
+    name: 'AppHeader',
 
-        components: {
-            BaseSelect,
+    components: {
+        WebsiteManager,
+        WebsiteManageModal
+    },
+
+    methods: {
+        onManageBtnClick(e) {
+            this.$store.commit('modal/show');
         },
+    },
 
-        methods: {
-            onWebsiteSelect(e: Event) {
-                const selectedWebsite = e.target.value;
-
-                this.$store.commit('selectWebsite', selectedWebsite);
-                this.$store.dispatch({
-                    type: 'setAvailableTimestamps',
-                    selectedWebsite
-                });
-            }
+    computed: {
+        manageModalShown() {
+            return this.$store.state.modal.visible;
         },
-
-        computed: {
-            registeredWebsites() {
-                return this.$store.getters.registeredWebsites;
-            },
-        },
-    });
+    },
+});
 </script>
 
 

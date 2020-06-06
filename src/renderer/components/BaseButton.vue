@@ -1,7 +1,7 @@
 <template>
-    <button :type="type" :class="className" @click="onClick">
-        <slot></slot>
-    </button>
+<button :type="type" :class="className" @click="onClick">
+    <slot></slot>
+</button>
 </template>
 
 <script lang="ts">
@@ -22,25 +22,38 @@ export default Vue.extend({
 <style lang="scss" scoped>
 @import '../scss/variables';
 
+@mixin button-face($border-color, $font-color: $border-color) {
+    border-color: $border-color;
+    color: $font-color;
+
+    &:hover {
+        border-color: lighten($border-color, 10%);
+        color: lighten($font-color, 10%);
+    }
+}
+
 button {
     padding: .8rem 1.6rem;
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     border-radius: 4px;
     background-color: transparent;
 
+    &:before {
+        margin-right: .4rem;
+    }
+
     &.primary {
-        $primary-color: map-get($color, primary);
+        @include button-face(map-get($color, primary), #FFF);
 
-        border-color: $primary-color;
-        color: $primary-color;
-        font-weight: 700;
+        background-color: map-get($color, primary);
+    }
 
-        &:hover {
-            $primary-hover-color: lighten($primary-color, 10%);
+    &.secondary {
+        @include button-face(map-get($color, border), map-get($color, font));
+    }
 
-            border-color: $primary-hover-color;
-            color: $primary-hover-color;
-        }
+    &.danger {
+        @include button-face(#d92027);
     }
 }
 </style>
