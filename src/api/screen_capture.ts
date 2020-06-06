@@ -1,15 +1,25 @@
-import { DeviceType } from './device';
-import { DeviceViewport } from "./DeviceViewport";
+import {IpcMainEvent} from "electron";
 
 export default class {
     viewport: object;
 
-    constructor(deviceType: DeviceType) {
-        this.viewport = DeviceViewport[deviceType].value;
+    ipcEvent: IpcMainEvent;
+    ipcEventChannel: string;
+
+    constructor(viewportWidth: number) {
+        this.viewport = {
+            width: viewportWidth,
+            height: 667,
+        };
+    }
+
+    public setIpcEventHandler(evt: IpcMainEvent, channelName: string) {
+        this.ipcEvent = evt;
+        this.ipcEventChannel = channelName;
     }
 
     async run(page, path: string) {
-        await page.setViewport(this.viewport);
+        await page.setViewportSize(this.viewport);
 
         interface screenshotOptions {
             fullPage: boolean,

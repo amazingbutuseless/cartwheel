@@ -1,4 +1,5 @@
 const fs = require('fs');
+import * as URL from 'url';
 
 import { app, IpcMainEvent } from "electron";
 import { WebsiteMetadata } from '../common/website';
@@ -39,8 +40,17 @@ export default {
 
         e.reply('website-update-reply', website);
     },
+
+    deleteUserData(hostname) {
+        fs.rmdirSync(`${ app.getPath('userData') }/${ hostname }`, {
+            recursive: true,
+        });
+    },
     
     delete(e: IpcMainEvent, website: WebsiteMetadata): void {
+        const hostname = URL.parse(website.url).hostname;
+        this.deleteUserData(hostname);
+
         const items = this.read();
         
         const targetIdx = items.findIndex(item => item.url === website.url);

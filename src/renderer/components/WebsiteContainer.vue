@@ -4,7 +4,7 @@
             <website-timeline />
         </aside>
 
-        <website-details />
+        <website-details v-if="hasScreenshotGroupSelected"/>
     </div>
 </template>
 
@@ -22,6 +22,12 @@
             WebsiteTimeline,
             WebsiteDetails,
         },
+
+        computed: {
+            hasScreenshotGroupSelected() {
+                return this.$store.state.screenshots.id.length > 0;
+            },
+        }
     });
 </script>
 

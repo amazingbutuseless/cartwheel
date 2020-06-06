@@ -10,10 +10,13 @@
             />
         </header>
 
-        <details v-for="page in pages" :key="page.path">
+        <details
+            v-for="page in pages"
+            :key="page.path"
+        >
             <summary>{{ page.path }} - {{ page.title }}</summary>
 
-            <img :src="page.thumbnail" alt="">
+            <img :src="'file://' + page.screenshot" alt="">
         </details>
     </div>
 </template>
@@ -30,6 +33,7 @@ export default Vue.extend({
 
     methods: {
         onScreenshotGroupDeleteBtnClick(e: Event) {
+            this.$store.dispatch('screenshots/deleteGroup');
         },
     },
 
@@ -42,14 +46,9 @@ export default Vue.extend({
 
         pages() {
             console.log(`find page data under ${ this.$store.state.website.hostname }/${ this.$store.state.screenshots.id }`);
-            
-            return [
-                {
-                    title: 'Registration',
-                    path: '/user/register',
-                    thumbnail: 'file://dfdfa',
-                }
-            ];
+
+            this.$store.dispatch('screenshots/setPages');
+            return this.$store.state.screenshots.pages;
         },
     },
 });

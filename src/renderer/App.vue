@@ -1,8 +1,11 @@
 <template>
 <div>
     <app-header />
-    <website-tools />
-    <website-container />
+
+    <div v-if="hasWebsiteSelected">
+        <website-tools />
+        <website-container />
+    </div>
 </div>
 </template>  
 
@@ -33,6 +36,12 @@ export default Vue.extend({
     methods: {
     },
 
+    computed: {
+        hasWebsiteSelected() {
+            return this.$store.state.website.hostname.length > 0;
+        }
+    },
+
     created() {
         const onGettingWebsitesReplied = (e: IpcRendererEvent, websites: Array<WebsiteMetadata>): void => {
             this.$store.commit('websites/setList', websites);
@@ -51,11 +60,17 @@ export default Vue.extend({
             this.$store.commit('websites/removeItem', website);
         };
 
+        const onTakingScreenshotsReplied = (e: IpcRendererEvent, responses) => {
+            console.log({responses});
+        };
+
         ipcRenderer.on('websites-get-reply', onGettingWebsitesReplied.bind(this));
         
         ipcRenderer.on('website-add-reply', onAddingWebstiteReplied.bind(this));
         ipcRenderer.on('website-update-reply', onUpdatingWebstiteReplied.bind(this));
         ipcRenderer.on('website-remove-reply', onDeletingWebstiteReplied.bind(this));
+
+        ipcRenderer.on('screenshots-take-reply', onTakingScreenshotsReplied.bind(this));
 
         this.$store.dispatch('websites/set');
     },

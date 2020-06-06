@@ -6,7 +6,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import WebsitesHandler from './websites_handler';
 import ScreenshotsHandler from './screenshots_handler';
 
-const isDevelopment = process.env.NODE_ENV !== 'production'
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -60,3 +60,6 @@ ipcMain.on('website-update', WebsitesHandler.update.bind(WebsitesHandler));
 ipcMain.on('website-remove', WebsitesHandler.delete.bind(WebsitesHandler));
 
 ipcMain.on('screenshots-group-get', ScreenshotsHandler.list.bind(ScreenshotsHandler));
+ipcMain.on('screenshots-group-delete', ScreenshotsHandler.delete.bind(ScreenshotsHandler));
+ipcMain.on('screenshots-list', ScreenshotsHandler.get.bind(ScreenshotsHandler));
+ipcMain.on('screenshots-take', ScreenshotsHandler.take.bind(ScreenshotsHandler));

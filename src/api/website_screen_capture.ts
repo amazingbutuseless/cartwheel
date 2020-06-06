@@ -1,10 +1,10 @@
-import * as path from 'path';
 import * as URL from 'url';
 import * as fs from 'fs';
 
-import * as puppeteer from 'puppeteer';
+import { app, IpcMainEvent } from 'electron';
 
-import { DeviceType } from './device';
+import * as playwright from 'playwright';
+
 import ScreenCapture from './screen_capture';
 import WebsiteCrawler from './website_crawler';
 import WebsiteMapGenerator from './website_map_generator';
@@ -12,16 +12,16 @@ import WebsiteMapGenerator from './website_map_generator';
 export default class extends ScreenCapture {
     private basePath: string;
 
-    constructor(private url: string, private authenticate: object | undefined, deviceType: DeviceType) {
-        super(deviceType);
+    constructor(private url: string, private id: number, vw: number, private authenticate: object | undefined) {
+        super(vw);
 
         const hostname = URL.parse(url).hostname;
-        this.basePath = path.resolve(`${ process.cwd() }/screenshots/${ hostname }/${ deviceType }/${ Date.now() }`);
+        this.basePath = `${ app.getPath('userData') }/${ hostname }/${ id }`;
         fs.mkdirSync(this.basePath, {
             recursive: true,
         });
 
-        this.authenticate = authenticate;
+        WebsiteMapGenerator.path = `${ this.basePath }/sitemap.json`;
     }
 
     getFilePath(url: string): string {
@@ -44,21 +44,31 @@ export default class extends ScreenCapture {
             console.log({url, err});
         }
 
-        WebsiteMapGenerator.update(url, title, filePath);
+        WebsiteMapGenerator.update(url, title, `${ this.basePath }/${ filePath }`);
 
         await super.run(page, `${ this.basePath }/${ filePath }`);
     }
 
     async run(ignoreHTTPSErrors: boolean = false) {
-        const browser = await puppeteer.launch({
+        const browser = await playwright.chromium.launch({
             ignoreHTTPSErrors
         });
 
-        WebsiteCrawler.browser = browser;
-        await WebsiteCrawler.run(this.url, this.authenticate, this.capture.bind(this));
+        this.ipcEvent.reply(this.ipcEventChannel, {
+            'message': 'It starts to take screenshots.',
+        });
 
-        fs.writeFileSync(`${ this.basePath }/sitemap.json`, JSON.stringify(WebsiteMapGenerator.map));
+        const crawler = new WebsiteCrawler(browser, {
+            ipcEvent: this.ipcEvent,
+            ipcEventChannel: this.ipcEventChannel,
+        });
+
+        await crawler.run(this.url, this.authenticate, this.capture.bind(this));
 
         await browser.close();
+
+        this.ipcEvent.reply(this.ipcEventChannel, {
+            'message': 'It completes taking screenshots.',
+        });
     }
 };

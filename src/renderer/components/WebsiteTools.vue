@@ -1,14 +1,18 @@
 <template>
 <div id="website-tools">
-    <h2>{{ selectedWebsite }}</h2>
+    <h2>{{ hostname }}</h2>
 
-    <x-button
-        type="button"
-        className="secondary"
-        :onClick="onTakeScreenshotsBtnClick"
-    >
-        Take Screenshots
-    </x-button>
+    <div class="btn-container">
+        <website-target-devices :onSelect="onTargetDeviceSelect" />
+
+        <x-button
+                type="button"
+                className="secondary"
+                :onClick="onTakeScreenshotsBtnClick"
+        >
+            Take Screenshots
+        </x-button>
+    </div>
 </div>
 </template>
 
@@ -16,25 +20,45 @@
 import Vue from 'vue';
 
 import XButton from './BaseButton.vue';
+import WebsiteTargetDevices from "./WebsiteTargetDevices.vue";
 
 export default Vue.extend({
     components: {
         XButton,
+        WebsiteTargetDevices,
     },
     
     methods: {
+        onTargetDeviceSelect(device) {
+            this.$data.viewportWidth = device.vw;
+        },
+
         onTakeScreenshotsBtnClick(e: Event) {
             e.target.disabled = true;
 
-            this.$store.dispatch('takeScreenshots');
+            const hostname = this.$store.state.website.hostname;
+            const currentWebsite = this.$store.state.websites.list.find(website => website.url.includes(hostname));
+
+            this.$store.dispatch('screenshots/take', {
+                id: Date.now(),
+                url: currentWebsite.url,
+                viewportWidth: this.$data.viewportWidth,
+                remote: currentWebsite.remote,
+            });
         }
     },
 
     computed: {
-        selectedWebsite(): string {
-            return this.$store.state.selectedWebsite;
+        hostname(): string {
+            return this.$store.state.website.hostname;
         },
     },
+
+    data() {
+        return {
+            viewportWidth: 1080,
+        }
+    }
 })
 </script>
 
@@ -53,6 +77,10 @@ button {
     }
 }
 
+.btn-container {
+    text-align: right;
+}
+
 #website-tools {
     margin-bottom: 1.6rem;
     padding: 0 2.4rem;
@@ -61,6 +89,8 @@ button {
     border-bottom: 1px solid map-get($color, border);
 
     @media (min-width: map-get($breakpoints, medium)) {
+        display: grid;
+        grid-template-columns: 1fr minmax(20rem, 33vw);
         padding-top: calc(10.3rem + .8rem);
     }
 }
