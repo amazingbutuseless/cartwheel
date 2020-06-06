@@ -1,3 +1,5 @@
+import { ipcRenderer } from 'electron';
+
 export default {
     namespaced: true,
 
@@ -32,9 +34,7 @@ export default {
 
     actions: {
         setGroups({commit, state, rootState}): void {
-            console.log(`find the directory under ${ rootState.website.hostname }`);
-
-            const groups = ["1591361622000", "1591365622000"];
+            const groups = ipcRenderer.sendSync('screenshots-group-get', rootState.website.hostname);
             commit({
                 type: 'setGroups', 
                 groups

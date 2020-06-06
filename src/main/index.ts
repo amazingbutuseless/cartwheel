@@ -4,6 +4,7 @@ import * as URL from "url";
 import { app, BrowserWindow, ipcMain } from "electron";
 
 import WebsitesHandler from './websites_handler';
+import ScreenshotsHandler from './screenshots_handler';
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -57,3 +58,5 @@ ipcMain.on('websites-get', WebsitesHandler.get.bind(WebsitesHandler));
 ipcMain.on('website-add', WebsitesHandler.add.bind(WebsitesHandler));
 ipcMain.on('website-update', WebsitesHandler.update.bind(WebsitesHandler));
 ipcMain.on('website-remove', WebsitesHandler.delete.bind(WebsitesHandler));
+
+ipcMain.on('screenshots-group-get', ScreenshotsHandler.list.bind(ScreenshotsHandler));

@@ -1,10 +1,13 @@
 <template>
     <div id="website-details">
         <header>
-            <h2>
-                {{ selectedWebsite }}
-                <small>{{ timeWhenTakingScreenshotBegun }}</small>
-            </h2>
+            <h3>{{ whenScreenshotTaken }}</h3>
+            
+            <x-button
+                type="button"
+                className="secondary"
+                :onClick="onScreenshotGroupDeleteBtnClick"
+            />
         </header>
 
         <details v-for="page in pages" :key="page.path">
@@ -18,51 +21,43 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import XButton from './BaseButton.vue';
+
 export default Vue.extend({
-    computed: {
-        selectedWebsite(): string {
-            return this.$store.state.selectedWebsite;
-        },
-
-        timeWhenTakingScreenshotBegun(): string {
-            const timestamp: string = this.$store.state.selectedTimestamp;
-            this.$data.selectedTimestamp = timestamp;
-
-            return new Date(parseInt(timestamp)).toLocaleString();
-        },
-    },
-
-    watch: {
-        selectedTimestamp(selected) {
-            this.setPages();
-        }
+    components: {
+        XButton,
     },
 
     methods: {
-        setPages() {
-            console.log(`find page data under ${ this.$store.state.selectedWebsite }/${ this.$data.selectedTimestamp }`);
+        onScreenshotGroupDeleteBtnClick(e: Event) {
+        },
+    },
+
+    computed: {
+        whenScreenshotTaken() {
+            const timestamp: string = this.$store.state.screenshots.id;
+
+            return new Date(parseInt(timestamp)).toLocaleString();
+        },
+
+        pages() {
+            console.log(`find page data under ${ this.$store.state.website.hostname }/${ this.$store.state.screenshots.id }`);
             
-            this.$data.pages = [
+            return [
                 {
                     title: 'Registration',
                     path: '/user/register',
                     thumbnail: 'file://dfdfa',
                 }
             ];
-        }
+        },
     },
-
-    data() {
-        return {
-            'selectedTimestamp': '',
-            'pages': [],
-        }
-    }
 });
 </script>
 
 <style lang="scss" scoped>
     @import '../scss/variables';
+    @import '../scss/font';
 
     $primary-color: map-get($color, primary);
 
@@ -84,6 +79,12 @@ export default Vue.extend({
 
         &:before {
             content: '\1F3E0';
+        }
+    }
+
+    button {
+        &:before {
+            @include FontAwesomeIcon('\f2ed');
         }
     }
 

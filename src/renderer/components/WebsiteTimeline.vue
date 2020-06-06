@@ -25,7 +25,7 @@
                     }
                 });
 
-                this.$store.commit('selectTimestamp', e.target.hash.substr(1));
+                this.$store.commit('screenshots/setId', e.target.hash.substr(1));
             },
 
             convertTimestampToReadableDate(timestamp: string): string {
@@ -35,7 +35,7 @@
 
         computed: {
             groups() {
-                return this.$store.getters.timestampGroup;
+                return this.$store.getters['screenshots/timeline'];
             }
         },
 
