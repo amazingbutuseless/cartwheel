@@ -81,7 +81,28 @@ export default {
             const basePath = `${ rootState.website.hostname }/${ state.id }`;
             const sitemap = ipcRenderer.sendSync('screenshots-list', basePath);
 
+            const settings = rootState.websites.list.find(website => website.url.includes(rootState.website.hostname));
+            let remoteHostname = '';
+
+            if (settings.remote.length > 0) {
+                const parser = document.createElement('a');
+                parser.href = settings.remote;
+                remoteHostname = parser.hostname;
+            }
+
             let pages = [];
+
+            const diff = (fileName: string, compareTo: string) => {
+                const hostname = rootState.website.hostname;
+                const id = state.id;
+
+                return ipcRenderer.sendSync('screenshots-diff', {
+                    hostname,
+                    id,
+                    compareTo,
+                    fileName
+                });
+            };
 
             const getPage = (details, prefix: string = '/') => {
                 Object.entries(details).forEach(([key, val]) => {
@@ -91,11 +112,16 @@ export default {
                 });
 
                 if (details.hasOwnProperty('title')) {
-                    pages.push({
+                    let data = {
                         'path': `/${ prefix }`,
                         'title': details.title,
                         'screenshot': details.screenshot,
-                    });
+                        'diffFromPrevious': diff(details.screenshot.substr(details.screenshot.lastIndexOf('/') + 1), 'previous'),
+                    };
+
+                    if (settings.remote.length > 0) data['diffFromRemote'] = diff(details.screenshot.substr(details.screenshot.lastIndexOf('/') + 1), remoteHostname);
+
+                    pages.push(data);
                 }
             };
 

@@ -38,6 +38,7 @@ export default Vue.extend({
             parser.href = e.target.value;
 
             this.$store.commit('website/setHostname', parser.hostname);
+            this.$store.commit('screenshots/setId', '');
             this.$store.dispatch('screenshots/setGroups');
         },
     },

@@ -18,27 +18,20 @@ export default class {
         this.ipcEventChannel = channelName;
     }
 
-    async run(page, path: string) {
+    async run(page, path: string | undefined): Promise<Buffer> {
         await page.setViewportSize(this.viewport);
 
         interface screenshotOptions {
             fullPage: boolean,
             path?: string,
-            encoding?: string,
         }
 
         const options: screenshotOptions = {
             fullPage: true,
         };
-        
 
-        if (typeof path !== undefined) {
-            options['path'] = path;
+        if (typeof path !== undefined) options['path'] = path;
 
-        } else {
-            options['encoding'] = 'base64';
-        }
-
-        await page.screenshot(options);
+        return await page.screenshot(options);
     }
 }

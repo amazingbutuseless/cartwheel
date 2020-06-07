@@ -63,3 +63,4 @@ ipcMain.on('screenshots-group-get', ScreenshotsHandler.list.bind(ScreenshotsHand
 ipcMain.on('screenshots-group-delete', ScreenshotsHandler.delete.bind(ScreenshotsHandler));
 ipcMain.on('screenshots-list', ScreenshotsHandler.get.bind(ScreenshotsHandler));
 ipcMain.on('screenshots-take', ScreenshotsHandler.take.bind(ScreenshotsHandler));
+ipcMain.on('screenshots-diff', ScreenshotsHandler.checkIfDifferent.bind(ScreenshotsHandler));

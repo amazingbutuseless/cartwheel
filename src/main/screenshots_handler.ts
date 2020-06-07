@@ -17,7 +17,9 @@ export default {
 
         if (!fs.existsSync(basePath)) fs.mkdirSync(basePath);
 
-        e.returnValue = fs.readdirSync(basePath);
+        let dirs = fs.readdirSync(basePath).filter(dir => !['.DS_Store'].includes(dir));
+
+        e.returnValue = dirs;
     },
 
     delete(e: IpcMainEvent, {hostname, id}): void {
@@ -32,6 +34,14 @@ export default {
     async take(e: IpcMainEvent, { url, id, viewportWidth, remote }): void {
         const handler = new WebsiteScreenCapture(url, id, viewportWidth);
         handler.setIpcEventHandler(e, 'screenshots-take-reply');
+
+        if (remote.length > 0) handler.remoteEnvironment = remote;
+
         await handler.run(url);
+    },
+
+    checkIfDifferent(e: IpcMainEvent, { hostname, id, compareTo, fileName }): void  {
+        const path = `${ app.getPath('userData') }/${ hostname }/${ id }/comparison/${ compareTo }/${ fileName }`;
+        e.returnValue = fs.existsSync(path);
     }
 };

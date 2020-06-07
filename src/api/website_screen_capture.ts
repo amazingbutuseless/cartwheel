@@ -8,9 +8,12 @@ import * as playwright from 'playwright';
 import ScreenCapture from './screen_capture';
 import WebsiteCrawler from './website_crawler';
 import WebsiteMapGenerator from './website_map_generator';
+import {BaseComparison, ComparisonWithPreviousScreenshot, ComparisonWithRemotePage} from "./webpage_comparison";
 
 export default class extends ScreenCapture {
     private basePath: string;
+    private comparisonerWithPreviousVersion: ComparisonWithPreviousScreenshot;
+    private comparisonerWithRemoteWebSite: ComparisonWithRemotePage | null;
 
     constructor(private url: string, private id: number, vw: number, private authenticate: object | undefined) {
         super(vw);
@@ -22,6 +25,13 @@ export default class extends ScreenCapture {
         });
 
         WebsiteMapGenerator.path = `${ this.basePath }/sitemap.json`;
+
+        this.comparisonerWithPreviousVersion = new ComparisonWithPreviousScreenshot(this.basePath);
+        this.comparisonerWithRemoteWebSite = null;
+    }
+
+    set remoteEnvironment(remoteUrl) {
+        this.comparisonerWithRemoteWebSite = new ComparisonWithRemotePage(this.basePath, remoteUrl, this.viewport.width);
     }
 
     getFilePath(url: string): string {
@@ -44,15 +54,22 @@ export default class extends ScreenCapture {
             console.log({url, err});
         }
 
-        WebsiteMapGenerator.update(url, title, `${ this.basePath }/${ filePath }`);
+        const destPath = `${ this.basePath }/${ filePath }`;
 
-        await super.run(page, `${ this.basePath }/${ filePath }`);
+        WebsiteMapGenerator.update(url, title, destPath);
+
+        await super.run(page, destPath);
+
+        this.comparisonerWithPreviousVersion.compare(destPath);
+        if (this.comparisonerWithRemoteWebSite) {
+            this.comparisonerWithRemoteWebSite.compare(destPath, url);
+        }
     }
 
     async run(ignoreHTTPSErrors: boolean = false) {
-        const browser = await playwright.chromium.launch({
-            ignoreHTTPSErrors
-        });
+        const browser = await playwright.chromium.launch();
+
+        if (ignoreHTTPSErrors) await browser.newContext({ ignoreHTTPSErrors });
 
         this.ipcEvent.reply(this.ipcEventChannel, {
             'message': 'It starts to take screenshots.',

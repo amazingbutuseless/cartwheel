@@ -1,6 +1,3 @@
-import * as fs from "fs";
-import WebsiteMapGenerator from "./website_map_generator";
-
 export default class {
     private internalLinks: string[];
 
