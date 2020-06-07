@@ -2,12 +2,8 @@
     <div id="website-details">
         <header>
             <h3>{{ whenScreenshotTaken }}</h3>
-            
-            <x-button
-                type="button"
-                className="secondary"
-                :onClick="onScreenshotGroupDeleteBtnClick"
-            />
+
+            <button type="button" :onClick="onScreenshotGroupDeleteBtnClick"></button>
         </header>
 
         <details
@@ -114,8 +110,14 @@ export default Vue.extend({
     }
 
     button {
+        border: 0;
+        background-color: transparent;
+        cursor: pointer;
+
         &:before {
-            @include FontAwesomeIcon('\f2ed');
+            @include FontAwesomeIcon('\f00d');
+
+            color: map-get($color, primary);
         }
     }
 

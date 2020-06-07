@@ -16,8 +16,6 @@
     import WebsiteDetails from './WebsiteDetails.vue';
 
     export default Vue.extend({
-        name: 'WebsiteContainer',
-
         components: {
             WebsiteTimeline,
             WebsiteDetails,
