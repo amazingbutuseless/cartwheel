@@ -16,12 +16,13 @@
         >
             <summary>{{ page.path }} - {{ page.title }}</summary>
 
-            <img :src="'file://' + page.screenshot" alt="">
+            <img :src="getImage(page.screenshot)" alt="">
         </details>
     </div>
 </template>
 
 <script lang="ts">
+    import { nativeImage } from 'electron';
 import Vue from 'vue';
 
 import XButton from './BaseButton.vue';
@@ -35,6 +36,13 @@ export default Vue.extend({
         onScreenshotGroupDeleteBtnClick(e: Event) {
             this.$store.dispatch('screenshots/deleteGroup');
         },
+
+        getImage(path) {
+            if (!path) return '';
+
+            const image = nativeImage.createFromPath(path);
+            return image.toDataURL();
+        }
     },
 
     computed: {
@@ -60,25 +68,13 @@ export default Vue.extend({
 
     $primary-color: map-get($color, primary);
 
-    h2 {
-        margin: 0;
-        margin-bottom: 2.4rem;
-        padding: 0;
-        font-size: 1.6rem;
-        color: $primary-color;
-
-        small {
-            display: inline-block;
-            padding: .4rem .8rem;
-            background-color: $primary-color;
-            font-size: 1.2rem;
-            color: map-get($color, background);
-            font-weight: 700;
-        }
-
-        &:before {
-            content: '\1F3E0';
-        }
+    h3 {
+        display: inline-block;
+        padding: .4rem .8rem;
+        background-color: $primary-color;
+        font-size: 1.2rem;
+        color: map-get($color, background);
+        font-weight: 700;
     }
 
     button {
@@ -87,8 +83,17 @@ export default Vue.extend({
         }
     }
 
-    summary {
-        font-size: 1.4rem;
-        font-weight: 500;
+    details {
+        margin-bottom: 1.6rem;
+
+        summary {
+            margin-bottom: 1.6rem;
+            font-size: 1.4rem;
+            font-weight: 500;
+        }
+
+        img {
+            max-width: 100%;
+        }
     }
 </style>

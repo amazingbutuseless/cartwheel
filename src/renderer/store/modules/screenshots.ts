@@ -81,19 +81,26 @@ export default {
             const getPage = (details, prefix: string = '/') => {
                 Object.entries(details).forEach(([key, val]) => {
                     if (typeof val == 'object') {
-                        getPage(val, `${ prefix }/${ key }/`);
+                        getPage(val, `${ prefix }/${ key }`);
                     }
                 });
 
-                pages.push({
-                    'path': `${ prefix }`,
-                    'title': details.title,
-                    'screenshot': details.screenshot,
-                });
+                if (details.hasOwnProperty('title')) {
+                    pages.push({
+                        'path': `/${ prefix }`,
+                        'title': details.title,
+                        'screenshot': details.screenshot,
+                    });
+                }
             };
 
             Object.entries(sitemap).forEach(([depth, details]) => {
-                getPage(details, `/${ depth }`);
+                getPage(details, `${ depth }`);
+            });
+
+            pages.sort((prev, next) => {
+                if (prev.path < next.path) return -1;
+                if (next.path < prev.path) return 1;
             });
 
             commit('setPages', pages);
