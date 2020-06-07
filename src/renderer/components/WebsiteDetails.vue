@@ -90,6 +90,9 @@ export default Vue.extend({
             margin-bottom: 1.6rem;
             font-size: 1.4rem;
             font-weight: 500;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
         }
 
         img {

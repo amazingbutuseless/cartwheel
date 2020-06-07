@@ -31,6 +31,12 @@
             convertTimestampToReadableDate(timestamp: string): string {
                 return new Date(parseInt(timestamp)).toLocaleString();
             },
+
+            init() {
+                const items = this.$el.querySelectorAll('a');
+
+                if (items.length > 0) items.item(0).click();
+            }
         },
 
         computed: {
@@ -39,10 +45,12 @@
             }
         },
 
-        updated() {
-            const items = this.$el.querySelectorAll('a');
+        mounted() {
+            this.init();
+        },
 
-            if (items.length > 0) items.item(0).click();
+        updated() {
+            this.init();
         },
     });
 </script>

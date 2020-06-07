@@ -68,6 +68,7 @@ export default class extends ScreenCapture {
         await browser.close();
 
         this.ipcEvent.reply(this.ipcEventChannel, {
+            'complete': true,
             'message': 'It completes taking screenshots.',
         });
     }

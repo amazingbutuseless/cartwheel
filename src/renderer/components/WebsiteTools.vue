@@ -9,6 +9,7 @@
                 type="button"
                 className="secondary"
                 :onClick="onTakeScreenshotsBtnClick"
+                :disabled="canTakeScreenshot"
         >
             Take Screenshots
         </x-button>
@@ -34,7 +35,7 @@ export default Vue.extend({
         },
 
         onTakeScreenshotsBtnClick(e: Event) {
-            e.target.disabled = true;
+            this.$store.commit('screenshots/switchAvailable', false);
 
             const hostname = this.$store.state.website.hostname;
             const currentWebsite = this.$store.state.websites.list.find(website => website.url.includes(hostname));
@@ -51,6 +52,10 @@ export default Vue.extend({
     computed: {
         hostname(): string {
             return this.$store.state.website.hostname;
+        },
+
+        canTakeScreenshot() {
+          return this.$store.state.screenshots.canTake;
         },
     },
 

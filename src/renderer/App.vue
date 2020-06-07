@@ -48,7 +48,6 @@ export default Vue.extend({
         };
 
         const onAddingWebstiteReplied = (e: IpcRendererEvent, website: WebsiteMetadata): void => {
-            console.trace();
             this.$store.commit('websites/addItem', website);
         };
 
@@ -60,8 +59,11 @@ export default Vue.extend({
             this.$store.commit('websites/removeItem', website);
         };
 
-        const onTakingScreenshotsReplied = (e: IpcRendererEvent, responses) => {
-            console.log({responses});
+        const onTakingScreenshotsReplied = (e: IpcRendererEvent, response) => {
+            if (response.hasOwnProperty('complete') && response.complete) {
+                this.$store.dispatch('screenshots/setGroups');
+                this.$store.commit('screenshots/switchAvailable', true);
+            }
         };
 
         ipcRenderer.on('websites-get-reply', onGettingWebsitesReplied.bind(this));

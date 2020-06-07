@@ -7,6 +7,7 @@ export default {
         id: '',
         groups: [],
         pages: [],
+        canTake: true,
     },
 
     getters: {
@@ -41,6 +42,10 @@ export default {
 
         setPages(state, pages): void {
             state.pages = pages;
+        },
+
+        switchAvailable(state, available): void {
+            state.canTake = available;
         },
 
         add(state, timestamp): void {
