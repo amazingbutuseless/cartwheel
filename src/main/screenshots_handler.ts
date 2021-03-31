@@ -37,7 +37,7 @@ export default {
 
         if (remote.length > 0) handler.remoteEnvironment = remote;
 
-        await handler.run(url);
+        await handler.run(true);
     },
 
     checkIfDifferent(e: IpcMainEvent, { hostname, id, compareTo, fileName }): void  {

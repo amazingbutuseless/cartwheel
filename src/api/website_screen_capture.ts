@@ -67,7 +67,9 @@ export default class extends ScreenCapture {
     }
 
     async run(ignoreHTTPSErrors: boolean = false) {
-        const browser = await playwright.chromium.launch();
+        const browser = await playwright.chromium.launch({
+            args: ['--ignore-certificate-errors']
+        });
 
         if (ignoreHTTPSErrors) await browser.newContext({ ignoreHTTPSErrors });
 

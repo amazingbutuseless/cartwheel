@@ -97,7 +97,7 @@ export class ComparisonWithRemotePage extends BaseComparison {
         }
 
         const page = await this.browser.newPage();
-        page.setDefaultTimeout(60 * 3 * 1000);
+        page.setDefaultTimeout(60 * 10 * 1000);
 
         await page.goto(`${ this.remoteUrl }${ URL.parse(url).path }`);
 
