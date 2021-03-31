@@ -6,12 +6,16 @@
   "scripts": {
     "dev": "electron-webpack dev",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "compile": "electron-webpack",
+    "dist": "npm run compile && electron-builder",
+    "dist:dir": "npm run dist -- --dir -c.compression=store -c.mac.identity=null"
   },
-  "author": "",
+  "author": "amazingbutuseless<cindian@amazingbutuseless.net>",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^9.0.0",
+    "electron": "^9.4.4",
+    "electron-builder": "^22.7.0",
     "electron-rebuild": "^1.11.0",
     "electron-webpack": "^2.8.2",
     "electron-webpack-ts": "^4.0.1",
@@ -19,17 +23,18 @@
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "typescript": "^3.9.3",
+    "vue-loader": "^15.9.2",
     "webpack": "^4.43.0"
   },
   "electronWebpack": {
     "title": "Cartwheel - 옆구르기 하면서 봐도 안다.",
     "commonSourceDirectory": "src/common",
-    "staticSourceDirectory": "static",
     "main": {
       "sourceDirectory": "src/main"
     },
     "renderer": {
-      "sourceDirectory": "src/renderer"
+      "sourceDirectory": "src/renderer",
+      "webpackConfig": "webpack.renderer.additions.js"
     }
   },
   "dependencies": {

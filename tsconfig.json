@@ -2,8 +2,8 @@
     "extends": "./node_modules/electron-webpack/tsconfig-base.json",
     "compilerOptions": {
         "target": "es5",
-        "strict": true,
         "module": "es2015",
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "noEmit": true
     }
 }
