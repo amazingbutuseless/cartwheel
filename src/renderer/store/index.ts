@@ -8,6 +8,7 @@ import websites from './modules/websites';
 import website from './modules/website';
 import screenshots from './modules/screenshots';
 
+
 Vue.use(Vuex);
 
 interface CartwheelStates {
@@ -19,6 +20,16 @@ interface CartwheelStates {
 }
 
 export default new Vuex.Store({
+    state: {
+        isLoading: false,
+    },
+
+    mutations: {
+        switchLoading(state, isLoading) {
+            state.isLoading = isLoading;
+        }
+    },
+
   modules: {
     modal,
     websites,

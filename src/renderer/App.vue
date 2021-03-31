@@ -6,6 +6,8 @@
         <website-tools />
         <website-container />
     </div>
+
+    <div id="indicator" :class="isLoading ? 'active' : ''">🤸🏻‍♀️</div>
 </div>
 </template>  
 
@@ -39,7 +41,11 @@ export default Vue.extend({
     computed: {
         hasWebsiteSelected() {
             return this.$store.state.website.hostname.length > 0;
-        }
+        },
+
+        isLoading() {
+            return this.$store.state.isLoading;
+        },
     },
 
     created() {
@@ -83,4 +89,16 @@ export default Vue.extend({
 
 <style lang="scss">
 @import './scss/global';
+
+#indicator {
+    display: none;
+    font-size: 50px;
+
+    &.active {
+        display: inline-block;
+        animation: spin 1.5s linear infinite;
+    }
+}
+
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 </style>
